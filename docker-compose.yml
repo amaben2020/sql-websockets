@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    ports:
+      - '3307:3306' # You changed to 3307—good idea if 3306 is taken!
+    environment:
+      MYSQL_ROOT_PASSWORD: algomachine
+      MYSQL_DATABASE: blue_dev
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
