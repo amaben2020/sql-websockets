@@ -72,11 +72,11 @@ const io = new Server(server, {
 const PORT = 9001;
 
 io.on('connection', (socket) => {
-  console.log('Connected', socket.id);
+  console.log(`✅ User connected: ${socket.id}`);
 
-  socket.on('register', (userId) => {
+  socket.on('connected-to-ui', (userId) => {
+    console.log(userId);
     socket.join(`user-${userId}`);
-    console.log('User ID JOINED', userId);
   });
 });
 
@@ -84,14 +84,15 @@ app.post('/confirm-order/:userId', (req, res) => {
   const { userId } = req.params;
 
   io.to(`user-${userId}`).emit('order-confirmed', {
-    message: `Order confirmed for ${userId} ${Math.random()}`,
+    message: 'You ordered a water bottle',
+    productName: 'Water Bottle',
   });
 
   res.json({
-    message: `Order confirmed for user ${userId} ${Math.random()}`,
+    message: `Order confirmation sent to user ${userId}`,
   });
 });
 
-server.listen(9001, () => {
-  console.log(`server started on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
